@@ -1,0 +1,195 @@
+:root {
+  --bg-0: #0a0715;
+  --bg-1: #150f26;
+  --surface: rgba(240, 220, 180, 0.06);
+  --surface-strong: rgba(240, 220, 180, 0.11);
+  --border: rgba(212, 175, 84, 0.22);
+  --border-strong: rgba(212, 175, 84, 0.45);
+  --text-0: #f3e7c9;
+  --text-1: #c9b98f;
+  --text-2: #8a7f68;
+  --accent: #d4af37;
+  --accent-2: #8a4a3a;
+  --accent-3: #6fae7c;
+  --danger: #c0392b;
+}
+
+.app {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: var(--bg-0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+}
+
+.app-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1800px;
+}
+
+/* ---------- Enchanted background ---------- */
+
+.bg3d {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(60, 40, 90, 0.35), transparent 60%),
+    linear-gradient(180deg, #120c22 0%, #0a0715 60%, #060410 100%);
+}
+
+.bg3d-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bg3d-moon {
+  position: absolute;
+  top: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 35%, #fdf6e3 0%, #e8d9a8 55%, #cbb877 100%);
+  box-shadow: 0 0 80px 20px rgba(232, 217, 168, 0.25), 0 0 160px 60px rgba(212, 175, 84, 0.08);
+  opacity: 0.85;
+}
+
+/* Floating candles — genuine 3D bob via translateZ + gentle rotation */
+.bg3d-candles {
+  position: absolute;
+  inset: 0;
+  perspective: 900px;
+  transform-style: preserve-3d;
+}
+
+.candle {
+  position: absolute;
+  width: 10px;
+  height: 46px;
+  transform: scale(var(--scale, 1));
+  transform-style: preserve-3d;
+  animation: candle-float 6s ease-in-out infinite;
+  animation-delay: inherit;
+}
+
+.candle-body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 10px;
+  height: 40px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #f2e8d0 0%, #d8c79f 100%);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset -2px 0 3px rgba(0, 0, 0, 0.15);
+}
+
+.candle-flame {
+  position: absolute;
+  top: -14px;
+  left: 1px;
+  width: 8px;
+  height: 14px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: radial-gradient(ellipse at 50% 70%, #fff6d8 0%, #ffcf5e 45%, #e8862c 80%, transparent 100%);
+  filter: blur(0.3px);
+  animation: flame-flicker 0.6s ease-in-out infinite alternate;
+  transform-origin: bottom center;
+}
+
+.candle-glow {
+  position: absolute;
+  top: -30px;
+  left: -18px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 206, 92, 0.35), transparent 70%);
+  filter: blur(2px);
+  animation: flame-flicker 0.6s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes candle-float {
+  0%, 100% { transform: scale(var(--scale, 1)) translateY(0) translateZ(0) rotateZ(0deg); }
+  50% { transform: scale(var(--scale, 1)) translateY(-16px) translateZ(20px) rotateZ(1.5deg); }
+}
+
+@keyframes flame-flicker {
+  0% { transform: scaleY(1) scaleX(1) rotate(-1deg); opacity: 0.95; }
+  50% { transform: scaleY(1.08) scaleX(0.95) rotate(1deg); opacity: 1; }
+  100% { transform: scaleY(0.94) scaleX(1.04) rotate(-2deg); opacity: 0.88; }
+}
+
+/* Castle silhouette */
+.bg3d-castle {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 34vh;
+  background: #05040a;
+  clip-path: polygon(
+    0% 100%, 0% 62%, 4% 62%, 4% 48%, 8% 48%, 8% 40%, 11% 40%, 11% 55%,
+    16% 55%, 16% 44%, 19% 44%, 19% 30%, 21% 24%, 23% 30%, 23% 44%, 27% 44%,
+    27% 60%, 33% 60%, 33% 38%, 36% 38%, 36% 20%, 38% 14%, 40% 20%, 40% 38%,
+    43% 38%, 43% 58%, 50% 58%, 50% 34%, 53% 34%, 53% 18%, 55% 12%, 57% 18%,
+    57% 34%, 60% 34%, 60% 58%, 66% 58%, 66% 42%, 69% 42%, 69% 26%, 71% 20%,
+    73% 26%, 73% 42%, 77% 42%, 77% 60%, 82% 60%, 82% 46%, 85% 46%, 85% 36%,
+    88% 36%, 88% 50%, 92% 50%, 92% 63%, 96% 63%, 96% 55%, 100% 55%, 100% 100%
+  );
+  opacity: 0.92;
+}
+
+.bg3d-castle::after {
+  content: "";
+}
+
+.bg3d-mist {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 22vh;
+  background: linear-gradient(to top, rgba(10, 7, 21, 0.9), transparent);
+}
+
+.bg3d-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 30%, transparent 35%, rgba(4, 3, 8, 0.8) 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .candle,
+  .candle-flame,
+  .candle-glow {
+    animation: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .bg3d-moon {
+    width: 80px;
+    height: 80px;
+  }
+  .candle {
+    display: none;
+  }
+  .candle:nth-child(-n+3) {
+    display: block;
+  }
+}
